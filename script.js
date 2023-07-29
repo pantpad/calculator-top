@@ -8,9 +8,7 @@ console.log('ready');
 //make the numbers clicked appear on the calculator
 //another operator is clicked
     //equality operator with firstValue and secondValue != null? -> calculate firstValue + operator + secondValue;
-    //
-
-
+    
 const calculatorBox = document.querySelector('.calculator-box');
 const display = document.querySelector('.display');
 const displayContent = document.querySelector('.display-content');
@@ -19,7 +17,7 @@ function isOverflown(element) {
     return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
 
-function isOverflownCristo(element){
+function isDisplayOverflown(element){
     return element.clientWidth > element.parentElement.clientWidth;
 }
 
