@@ -10,3 +10,20 @@ console.log('ready');
     //equality operator with firstValue and secondValue != null? -> calculate firstValue + operator + secondValue;
     //
 
+
+const calculatorBox = document.querySelector('.calculator-box');
+const display = document.querySelector('.display');
+const displayContent = document.querySelector('.display-content');
+
+function isOverflown(element) {
+    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
+
+function isOverflownCristo(element){
+    return element.clientWidth > element.parentElement.clientWidth;
+}
+
+function reduceDisplayText(){
+    displayContent.style.fontSize = parseFloat(window.getComputedStyle(displayContent).fontSize) - 10 + "px";
+}
+
