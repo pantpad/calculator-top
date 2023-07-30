@@ -12,9 +12,9 @@ const   DECIMAL_PRECISION = 2;
 const   calculatorBox = document.querySelector('.calculator-box');
 const   display = document.querySelector('.display');
 const   displayContent = document.querySelector('.display-content');
-let     previousValue   = null;
-let     currentOperator = null;
-let     isOperationInPlace = false;
+let     previousValue       = currentValue      = null;
+let     currentOperator     = previousOperator  = null;
+let     isOperationInPlace  = false;
 
 /*--            COMPUTATIONAL LOGIC         --*/
 function add(firstNumber,secondNumber){
@@ -71,25 +71,39 @@ buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     if(/^\d$/.test(e.target.textContent)){
         displayValue = e.target.textContent;
         updateDisplay(displayValue);
-        if(isOperationInPlace){ !isOperationInPlace;}
+        if(isOperationInPlace){ isOperationInPlace = !isOperationInPlace;}
     }
     //apply logic for cancel button
     if(e.target.textContent == "C"){
+        clearVariables();
         clearDisplay();
     }
 
     //apply logic for operation buttons
     if(e.target.classList.contains('operation')){
         isOperationInPlace = true;
-        if(previousValue==null){
-            previousValue = displayContent.textContent;
+        if(e.target.textContent == '='){
+            //fai una cosa se si tratta di uguale
+            console.log('uguale');
         }else{
-            previousValue = operate(currentOperator,previousValue,displayContent.textContent);
-            updateDisplay(previousValue);
+            //fai un'altra cosa se non si tratta di uguale
+             //inizializzo quello che ho cliccato per ultimo
+            currentValue = displayContent.textContent;
+            currentOperator = e.target.textContent;
+            //se e' la prima operazione assegno i valori precedenti uguali a quelli attuali
+            if(previousOperator == null && previousValue == null){
+                previousOperator = currentOperator;
+                previousValue = currentValue;    
+            }else{
+                //svolgo l'uguale
+                let result = operate(previousOperator,previousValue,currentValue);
+                updateDisplay(result);
+                previousValue = null;
+                previousOperator = null;
+                //svolgo l'operazione
+            }
         }
-        currentOperator = e.target.textContent;
-        console.log(previousValue);
-        console.log(currentOperator);
+        
     }
 }));
 
@@ -121,6 +135,14 @@ function updateDisplay(value){
         reduceDisplayText();
     }
 
+}
+
+function clearVariables(){
+    previousValue       = null;
+    currentValue        = null;
+    previousOperator    = null;
+    currentOperator     = null;
+    isOperationInPlace  = false;  
 }
 
 function clearDisplay(){
