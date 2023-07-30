@@ -66,9 +66,11 @@ const buttons = document.querySelectorAll('.buttons-container div');
 buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     if(/^\d$/.test(e.target.textContent)){
         displayValue = e.target.textContent;
-        displayContent.textContent = displayValue;
+        updateDisplay(displayValue);
     }
-    
+    if(e.target.textContent == "C"){
+        clearDisplay();
+    }
 }));
 
 
@@ -77,7 +79,29 @@ function isDisplayOverflown(element){
 }
 
 function reduceDisplayText(){
-    displayContent.style.fontSize = parseFloat(window.getComputedStyle(displayContent).fontSize) - 10 + "px";
+    displayContent.style.fontSize = parseFloat(window.getComputedStyle(displayContent).fontSize) - 5 + "px";
 }
 
-displayContent.textContent = displayValue;
+function updateDisplay(value){
+    if(displayContent.textContent.length > 16){
+        console.log('wee troppo grande');
+        return;
+    }
+
+    if(displayContent.textContent == "0"){
+        displayContent.textContent = value;
+    }else{
+    displayContent.textContent += value;
+    }
+
+    if(isDisplayOverflown(displayContent)){
+        reduceDisplayText();
+    }
+
+}
+
+function clearDisplay(){
+    displayContent.textContent = 0;
+}
+
+updateDisplay(0);
