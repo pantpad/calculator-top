@@ -50,16 +50,15 @@ function operate(operator,firstNumber,secondNumber){
         case '-':
             return subtract(firstNumber,secondNumber);
             break;
-        case '*':
-            multiply(firstNumber,secondNumber);
+        case 'X':
+            return multiply(firstNumber,secondNumber);
             break;
         case '/':
             if(secondNumber == 0){
-
                 updateDisplay("Cannot Divide By Zero");
             }
             else
-                divide(firstNumber,secondNumber);
+                return divide(firstNumber,secondNumber);
             break;
     }
 }
