@@ -34,7 +34,7 @@ body{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    height: 50px;
+    height: 40px;
     justify-content: center;
     align-items: center;
     background-color: #202020;
@@ -42,6 +42,7 @@ body{
 
 .logo{
     display: flex;
+    flex: 1;
     width: 150px;
     height: 100%;
     justify-content: flex-start;
@@ -59,13 +60,12 @@ img{
 
 .overlay-button{
     display: flex;
+    flex: calc(1/12) 1 50px;
     justify-content: center;
     align-items: center;
     text-align: center;
     background-color: #202020;
-    padding: 6px 12px;
     height: 100%;
-    width: 50px;
 }
 
 .overlay-button:hover{
