@@ -12,12 +12,13 @@ const   DECIMAL_PRECISION = 2;
 const   calculatorBox = document.querySelector('.calculator-box');
 const   display = document.querySelector('.display');
 const   displayContent = document.querySelector('.display-content');
-let     displayValue = '0';
-
+let     previousValue   = null;
+let     currentOperator = null;
+let     isOperationInPlace = false;
 
 /*--            COMPUTATIONAL LOGIC         --*/
 function add(firstNumber,secondNumber){
-    return firstNumber + secondNumber;
+    return parseFloat(firstNumber) + parseFloat(secondNumber);
 }
 
 function subtract(firstNumber,secondNumber){
@@ -41,21 +42,24 @@ function divide(firstNumber,secondNumber){
 /**
  * takes an operator and DECIMAL_PRECISION numbers and then calls one of the above functions on the numbers.
  */
-function operate(operator,firstNumber = 0 ,secondNumber = 0){
+function operate(operator,firstNumber,secondNumber){
     switch(operator){
-        case '0':
-            break;
         case '+':
-            displayValue = add(firstNumber,secondNumber);
+            return add(firstNumber,secondNumber);
             break;
         case '-':
-            displayValue = subtract(firstNumber,secondNumber);
+            return subtract(firstNumber,secondNumber);
             break;
         case '*':
-            displayValue = multiply(firstNumber,secondNumber);
+            multiply(firstNumber,secondNumber);
             break;
         case '/':
-            displayValue = divide(firstNumber,secondNumber);
+            if(secondNumber == 0){
+
+                updateDisplay("Cannot Divide By Zero");
+            }
+            else
+                divide(firstNumber,secondNumber);
             break;
     }
 }
@@ -64,12 +68,29 @@ function operate(operator,firstNumber = 0 ,secondNumber = 0){
 //apply eventListener to all buttons inside the buttons-container
 const buttons = document.querySelectorAll('.buttons-container div');
 buttons.forEach(button => button.addEventListener(('click'),(e)=> {
+    //apply logic for each numbered button
     if(/^\d$/.test(e.target.textContent)){
         displayValue = e.target.textContent;
         updateDisplay(displayValue);
+        if(isOperationInPlace){ !isOperationInPlace;}
     }
+    //apply logic for cancel button
     if(e.target.textContent == "C"){
         clearDisplay();
+    }
+
+    //apply logic for operation buttons
+    if(e.target.classList.contains('operation')){
+        isOperationInPlace = true;
+        if(previousValue==null){
+            previousValue = displayContent.textContent;
+        }else{
+            previousValue = operate(currentOperator,previousValue,displayContent.textContent);
+            updateDisplay(previousValue);
+        }
+        currentOperator = e.target.textContent;
+        console.log(previousValue);
+        console.log(currentOperator);
     }
 }));
 
@@ -83,15 +104,18 @@ function reduceDisplayText(){
 }
 
 function updateDisplay(value){
-    if(displayContent.textContent.length > 16){
-        console.log('wee troppo grande');
+    if(displayContent.textContent.length > 16 && !isNaN(display.textContent)){
+        console.log('Numero troppo grande');
         return;
     }
 
-    if(displayContent.textContent == "0"){
+    if(displayContent.textContent == "0" || isNaN(displayContent.textContent.trim())){
         displayContent.textContent = value;
     }else{
-    displayContent.textContent += value;
+        if(isOperationInPlace){
+            displayContent.textContent = value;
+        }else
+            displayContent.textContent += value;
     }
 
     if(isDisplayOverflown(displayContent)){
@@ -101,7 +125,11 @@ function updateDisplay(value){
 }
 
 function clearDisplay(){
+    //value of firstNumber = 0;
+    //value of operation = '';
+    //value of ???
+    //addEventListeners removed
     displayContent.textContent = 0;
 }
 
-updateDisplay(0);
+displayContent.textContent = 0;
