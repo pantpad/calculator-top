@@ -27,7 +27,7 @@ body{
     height: 600px;
     border-radius: 8px;
     overflow: hidden;
-    /*box-shadow:1px 1px 25px 1px #3F3F41;*/
+    box-shadow:1px 1px 25px 1px #3F3F41;
 }
 
 .navbar{
