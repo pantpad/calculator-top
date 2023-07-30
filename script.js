@@ -13,10 +13,6 @@ const calculatorBox = document.querySelector('.calculator-box');
 const display = document.querySelector('.display');
 const displayContent = document.querySelector('.display-content');
 
-function isOverflown(element) {
-    return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
-}
-
 function isDisplayOverflown(element){
     return element.clientWidth > element.parentElement.clientWidth;
 }

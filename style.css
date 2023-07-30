@@ -123,12 +123,20 @@ img{
         align-items: center;
         font-size: 1.25rem;
     }
-
+    .number:hover{
+        background-color: #323232;
+    }
     .operator{
         background-color: #323232;
     }
-
+    .operator:hover{
+        background-color: #3B3B3B;
+    }
     .equality{
         background-color: #A6A5A1;
     }
+    .equality:hover{
+        background-color: #989793;
+    }
+
 }
