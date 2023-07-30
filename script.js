@@ -1,5 +1,3 @@
-console.log('ready');
-const DECIMAL_PRECISION = 2;
 //create the visual representation of the calculator
 //make the numbers clicked appear on the calculator
 //when operator is clicked 
@@ -8,19 +6,16 @@ const DECIMAL_PRECISION = 2;
 //make the numbers clicked appear on the calculator
 //another operator is clicked
     //equality operator with firstNumber and secondNumber != null? -> calculate firstNumber + operator + secondNumber;
-    
-const calculatorBox = document.querySelector('.calculator-box');
-const display = document.querySelector('.display');
-const displayContent = document.querySelector('.display-content');
+console.log('hi, welcome to the w11 - calculator console!');
 
-function isDisplayOverflown(element){
-    return element.clientWidth > element.parentElement.clientWidth;
-}
+const   DECIMAL_PRECISION = 2;
+const   calculatorBox = document.querySelector('.calculator-box');
+const   display = document.querySelector('.display');
+const   displayContent = document.querySelector('.display-content');
+let     displayValue = '0';
 
-function reduceDisplayText(){
-    displayContent.style.fontSize = parseFloat(window.getComputedStyle(displayContent).fontSize) - 10 + "px";
-}
 
+/*--            COMPUTATIONAL LOGIC         --*/
 function add(firstNumber,secondNumber){
     return firstNumber + secondNumber;
 }
@@ -46,21 +41,43 @@ function divide(firstNumber,secondNumber){
 /**
  * takes an operator and DECIMAL_PRECISION numbers and then calls one of the above functions on the numbers.
  */
-function operate(operator,firstNumber,secondNumber){
+function operate(operator,firstNumber = 0 ,secondNumber = 0){
     switch(operator){
+        case '0':
+            break;
         case '+':
-            displayContent.textContent = add(firstNumber,secondNumber);
+            displayValue = add(firstNumber,secondNumber);
             break;
         case '-':
-            displayContent.textContent = subtract(firstNumber,secondNumber);
+            displayValue = subtract(firstNumber,secondNumber);
             break;
         case '*':
-            displayContent.textContent = multiply(firstNumber,secondNumber);
+            displayValue = multiply(firstNumber,secondNumber);
             break;
         case '/':
-            displayContent.textContent = divide(firstNumber,secondNumber);
+            displayValue = divide(firstNumber,secondNumber);
             break;
     }
 }
 
-displayContent.textContent = "test";
+/*--            BUTTONS LOGIC           --*/
+//apply eventListener to all buttons inside the buttons-container
+const buttons = document.querySelectorAll('.buttons-container div');
+buttons.forEach(button => button.addEventListener(('click'),(e)=> {
+    if(/^\d$/.test(e.target.textContent)){
+        displayValue = e.target.textContent;
+        displayContent.textContent = displayValue;
+    }
+    
+}));
+
+
+function isDisplayOverflown(element){
+    return element.clientWidth > element.parentElement.clientWidth;
+}
+
+function reduceDisplayText(){
+    displayContent.style.fontSize = parseFloat(window.getComputedStyle(displayContent).fontSize) - 10 + "px";
+}
+
+displayContent.textContent = displayValue;
