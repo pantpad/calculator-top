@@ -43,12 +43,11 @@ function divide(firstNumber,secondNumber){
 
 /*--            BUTTONS LOGIC           --*/
 //apply eventListener to buttons inside the buttons-container
-const buttons = document.querySelectorAll('.buttons-container div');
 const numberButtons = document.querySelectorAll('.buttons-container .number');
 const operationButtons = document.querySelectorAll('.buttons-container .operation');
 const backButton = document.querySelector('.back');
 const clearButton = document.querySelector('.clear');
-const clearEButton = document.querySelector('.ce');
+//const clearEButton = document.querySelector('.ce');
 const equalButton = document.querySelector('.equality');
 
 numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
@@ -79,6 +78,8 @@ clearButton.addEventListener(('click'),() => {
 });
 
 backButton.addEventListener(('click'),() => {
+    if(isOperationInPlace)return;
+    
     let displayValue = displayContent.textContent;
     if(displayValue == '0') return; 
     
@@ -155,27 +156,6 @@ equalButton.addEventListener('click',() => {
     updateDisplay(result); 
 });
 
-/*
-buttons.forEach(button => button.addEventListener(('click'),(e)=> {
-    //apply logic for each numbered button
-    if(/^\d$/.test(e.target.textContent)){
-        displayValue = e.target.textContent;
-        updateDisplay(displayValue);
-        if(isOperationInPlace){ isOperationInPlace = !isOperationInPlace;}
-    }
-    //apply logic for cancel button
-    if(e.target.textContent == "C"){
-        clearVariables();
-        clearDisplay();
-    }
-
-    //apply logic for operation buttons
-    if(e.target.classList.contains('operation')){
-        isOperationInPlace = true;
-
-    }
-}));
-*/
 function isDisplayOverflown(element){
     return element.clientWidth > element.parentElement.clientWidth;
 }
@@ -214,10 +194,6 @@ function clearVariables(){
 }
 
 function clearDisplay(){
-    //value of firstNumber = 0;
-    //value of operation = '';
-    //value of ???
-    //addEventListeners removed
     displayContent.textContent = 0;
 }
 
