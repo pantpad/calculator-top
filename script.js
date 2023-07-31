@@ -64,8 +64,37 @@ function operate(operator,firstNumber,secondNumber){
 }
 
 /*--            BUTTONS LOGIC           --*/
-//apply eventListener to all buttons inside the buttons-container
+//apply eventListener to buttons inside the buttons-container
 const buttons = document.querySelectorAll('.buttons-container div');
+const numberButtons = document.querySelectorAll('.buttons-container .number');
+const operationButtons = document.querySelectorAll('.buttons-container .operations');
+const backButton = document.querySelector('.back');
+const clearButton = document.querySelector('.clear');
+const clearEButton = document.querySelector('.ce');
+
+numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
+    let displayValue = displayContent.textContent;
+    let clickedValue = e.target.textContent;
+    if(clickedValue === '+/-'){
+        //take displayValue and change it from - to +
+        console.log('cambiato valore');
+        return;
+    }
+
+    if(clickedValue == '.' && displayValue.includes('.')){
+        return;
+    }else{
+        if(displayValue == "0" && clickedValue == '.'){
+            updateDisplay(displayValue+clickedValue);
+        }else{
+            updateDisplay(clickedValue);
+            if(isOperationInPlace){ isOperationInPlace = !isOperationInPlace;}
+        }
+    }
+
+    
+}));
+/*
 buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     //apply logic for each numbered button
     if(/^\d$/.test(e.target.textContent)){
@@ -82,11 +111,10 @@ buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     //apply logic for operation buttons
     if(e.target.classList.contains('operation')){
         isOperationInPlace = true;
-            
+
     }
 }));
-
-
+*/
 function isDisplayOverflown(element){
     return element.clientWidth > element.parentElement.clientWidth;
 }
