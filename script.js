@@ -91,9 +91,13 @@ numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
             if(isOperationInPlace){ isOperationInPlace = !isOperationInPlace;}
         }
     }
-
-    
 }));
+
+clearButton.addEventListener(('click'),() => {
+    clearVariables();
+    clearDisplay();
+});
+
 /*
 buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     //apply logic for each numbered button
