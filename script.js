@@ -145,9 +145,14 @@ function operate(){
 }
 
 equalButton.addEventListener('click',() => {
+    isOperationInPlace = true;
     let result = operate();
     console.log(result);
-    displayContent.textContent = result; 
+
+    if(result.toString().length > 16){
+        updateDisplay(result.toExponential(12));
+    }
+    updateDisplay(result); 
 });
 
 /*
@@ -194,7 +199,7 @@ function updateDisplay(value){
             displayContent.textContent += value;
     }
 
-    if(isDisplayOverflown(displayContent)){
+    while(isDisplayOverflown(displayContent)){
         reduceDisplayText();
     }
 
