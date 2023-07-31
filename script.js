@@ -95,7 +95,7 @@ backButton.addEventListener(('click'),() => {
     if(isOperationInPlace)return;
 
     let displayValue = displayContent.textContent;
-    if(displayValue == '0') return; 
+    if(displayValue == '0' || displayValue == "Cannot Divide By Zero") return; 
     
     if(displayValue.length == 1){
         clearDisplay();
@@ -117,6 +117,12 @@ function operationLogic(e){
     }
     currentOperator = e.target.textContent;
     currentValue = displayContent.textContent;
+
+    if(result == "Cannot Divide By Zero"){
+        displayContent.style.fontSize = "2.1rem";
+        operationButtons.forEach((button) => button.removeEventListener('click', operationLogic));  
+    }
+
     displayContent.textContent = result; 
     //currentValue = '';
     console.log("previousValue: "+previousValue+"\ncurrentOperator: "+currentOperator);
@@ -233,7 +239,8 @@ function clearVariables(){
     currentValue        = '';
     previousOperator    = undefined;
     currentOperator     = undefined;
-    isOperationInPlace  = false;  
+    isOperationInPlace  = false;
+    operationButtons.forEach((button) => button.addEventListener('click', operationLogic));
 }
 
 function clearDisplay(){
