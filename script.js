@@ -82,28 +82,7 @@ buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     //apply logic for operation buttons
     if(e.target.classList.contains('operation')){
         isOperationInPlace = true;
-        if(e.target.textContent == '='){
-            //fai una cosa se si tratta di uguale
-            console.log('uguale');
-        }else{
-            //fai un'altra cosa se non si tratta di uguale
-             //inizializzo quello che ho cliccato per ultimo
-            currentValue = displayContent.textContent;
-            currentOperator = e.target.textContent;
-            //se e' la prima operazione assegno i valori precedenti uguali a quelli attuali
-            if(previousOperator == null && previousValue == null){
-                previousOperator = currentOperator;
-                previousValue = currentValue;    
-            }else{
-                //svolgo l'uguale
-                let result = operate(previousOperator,previousValue,currentValue);
-                updateDisplay(result);
-                previousValue = null;
-                previousOperator = null;
-                //svolgo l'operazione
-            }
-        }
-        
+            
     }
 }));
 
