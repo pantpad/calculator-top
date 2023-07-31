@@ -106,11 +106,11 @@ backButton.addEventListener(('click'),() => {
     
 });
 
-operationButtons.forEach((button) => button.addEventListener('click',(e)=>{
+function operationLogic(e){
     let result = 0;
     isOperationInPlace = true;
     //if(currentValue === '') return;
-    if(currentValue !== ''){
+    if(currentValue !== '' && lastTwoButtons.prev != '='){
         result = operate();
     }else{
         previousValue = displayContent.textContent;
@@ -120,7 +120,9 @@ operationButtons.forEach((button) => button.addEventListener('click',(e)=>{
     displayContent.textContent = result; 
     //currentValue = '';
     console.log("previousValue: "+previousValue+"\ncurrentOperator: "+currentOperator);
-}));
+}
+
+operationButtons.forEach((button) => button.addEventListener('click', operationLogic));
 
 /**
  * takes an operator and DECIMAL_PRECISION numbers and then calls one of the above functions on the numbers.
@@ -174,6 +176,13 @@ function operate(){
 equalButton.addEventListener('click',() => {
     isOperationInPlace = true;
 
+    if(displayContent.textContent == "Cannot Divide By Zero"){
+        clearDisplay();
+        clearVariables();
+        operationButtons.forEach((button) => button.addEventListener('click', operationLogic));
+        return;
+    }
+
     let result = operate();
     console.log(result);
 
@@ -182,7 +191,8 @@ equalButton.addEventListener('click',() => {
     }
 
     if(result == "Cannot Divide By Zero"){
-        displayContent.style.fontSize = "2.1rem";        
+        displayContent.style.fontSize = "2.1rem";
+        operationButtons.forEach((button) => button.removeEventListener('click', operationLogic));  
     }
 
     updateDisplay(result); 
@@ -230,5 +240,10 @@ function clearDisplay(){
     displayContent.style.fontSize = "4rem";
     displayContent.textContent = 0;
 }
+
+function disableButton(){
+
+}
+
 
 displayContent.textContent = 0;
