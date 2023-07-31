@@ -12,13 +12,13 @@ const   DECIMAL_PRECISION = 2;
 const   calculatorBox = document.querySelector('.calculator-box');
 const   display = document.querySelector('.display');
 const   displayContent = document.querySelector('.display-content');
-let     previousValue       = currentValue      = null;
-let     currentOperator     = previousOperator  = null;
+let     previousValue       = currentValue      = '';
+let     currentOperator     = previousOperator  = undefined;
 let     isOperationInPlace  = false;
 
 /*--            COMPUTATIONAL LOGIC         --*/
 function add(firstNumber,secondNumber){
-    return parseFloat(firstNumber) + parseFloat(secondNumber);
+    return firstNumber + secondNumber;
 }
 
 function subtract(firstNumber,secondNumber){
@@ -39,38 +39,17 @@ function divide(firstNumber,secondNumber){
         return firstNumber / secondNumber;
     }
 }
-/**
- * takes an operator and DECIMAL_PRECISION numbers and then calls one of the above functions on the numbers.
- */
-function operate(operator,firstNumber,secondNumber){
-    switch(operator){
-        case '+':
-            return add(firstNumber,secondNumber);
-            break;
-        case '-':
-            return subtract(firstNumber,secondNumber);
-            break;
-        case 'X':
-            return multiply(firstNumber,secondNumber);
-            break;
-        case '/':
-            if(secondNumber == 0){
-                updateDisplay("Cannot Divide By Zero");
-            }
-            else
-                return divide(firstNumber,secondNumber);
-            break;
-    }
-}
+
 
 /*--            BUTTONS LOGIC           --*/
 //apply eventListener to buttons inside the buttons-container
 const buttons = document.querySelectorAll('.buttons-container div');
 const numberButtons = document.querySelectorAll('.buttons-container .number');
-const operationButtons = document.querySelectorAll('.buttons-container .operations');
+const operationButtons = document.querySelectorAll('.buttons-container .operation');
 const backButton = document.querySelector('.back');
 const clearButton = document.querySelector('.clear');
 const clearEButton = document.querySelector('.ce');
+const equalButton = document.querySelector('.equality');
 
 numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
     let displayValue = displayContent.textContent;
@@ -91,6 +70,7 @@ numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
             if(isOperationInPlace){ isOperationInPlace = !isOperationInPlace;}
         }
     }
+    //currentValue = displayContent.textContent;
 }));
 
 clearButton.addEventListener(('click'),() => {
@@ -106,9 +86,68 @@ backButton.addEventListener(('click'),() => {
         clearDisplay();
         return;
     }
-    
+
     displayContent.textContent = displayValue.slice(0,displayValue.length-1);
     
+});
+
+operationButtons.forEach((button) => button.addEventListener('click',(e)=>{
+    let result = 0;
+    isOperationInPlace = true;
+    //if(currentValue === '') return;
+    if(currentValue !== ''){
+        result = operate();
+    }else{
+        previousValue = displayContent.textContent;
+    }
+    currentOperator = e.target.textContent;
+    currentValue = displayContent.textContent;
+    displayContent.textContent = result; 
+    //currentValue = '';
+    console.log("previousValue: "+previousValue+"\ncurrentOperator: "+currentOperator);
+}));
+
+/**
+ * takes an operator and DECIMAL_PRECISION numbers and then calls one of the above functions on the numbers.
+ */
+function operate(){
+
+    let computation;
+    const prev = parseFloat(previousValue);
+    const current = parseFloat(displayContent.textContent);
+    if(isNaN(prev) || isNaN(current)) return;
+
+    switch(currentOperator){
+        case '+':
+            computation = add(prev,current);
+            break;
+        case '-':
+            computation = subtract(prev,current);
+            break;
+        case 'X':
+            computation = multiply(prev,current);
+            break;
+        case '/':
+            if(current == 0){
+                updateDisplay("Cannot Divide By Zero");
+            }
+            else
+                computation = divide(prev,current);
+            break;
+        default:
+            return;
+    }
+    currentValue = '';
+    currentOperator = undefined;
+    previousValue = computation;
+
+    return computation;
+}
+
+equalButton.addEventListener('click',() => {
+    let result = operate();
+    console.log(result);
+    displayContent.textContent = result; 
 });
 
 /*
@@ -162,10 +201,10 @@ function updateDisplay(value){
 }
 
 function clearVariables(){
-    previousValue       = null;
-    currentValue        = null;
-    previousOperator    = null;
-    currentOperator     = null;
+    previousValue       = '';
+    currentValue        = '';
+    previousOperator    = undefined;
+    currentOperator     = undefined;
     isOperationInPlace  = false;  
 }
 
