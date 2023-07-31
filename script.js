@@ -98,6 +98,19 @@ clearButton.addEventListener(('click'),() => {
     clearDisplay();
 });
 
+backButton.addEventListener(('click'),() => {
+    let displayValue = displayContent.textContent;
+    if(displayValue == '0') return; 
+    
+    if(displayValue.length == 1){
+        clearDisplay();
+        return;
+    }
+    
+    displayContent.textContent = displayValue.slice(0,displayValue.length-1);
+    
+});
+
 /*
 buttons.forEach(button => button.addEventListener(('click'),(e)=> {
     //apply logic for each numbered button
