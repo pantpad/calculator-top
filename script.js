@@ -12,6 +12,10 @@ const   DECIMAL_PRECISION = 2;
 const   calculatorBox = document.querySelector('.calculator-box');
 const   display = document.querySelector('.display');
 const   displayContent = document.querySelector('.display-content');
+const   lastTwoButtons = {
+    prev: '',
+    curr: '',
+};
 let     previousValue       = currentValue      = '';
 let     currentOperator     = previousOperator  = undefined;
 let     isOperationInPlace  = false;
@@ -43,12 +47,22 @@ function divide(firstNumber,secondNumber){
 
 /*--            BUTTONS LOGIC           --*/
 //apply eventListener to buttons inside the buttons-container
+const buttons = document.querySelectorAll('.buttons-container div');
 const numberButtons = document.querySelectorAll('.buttons-container .number');
 const operationButtons = document.querySelectorAll('.buttons-container .operation');
 const backButton = document.querySelector('.back');
 const clearButton = document.querySelector('.clear');
 //const clearEButton = document.querySelector('.ce');
 const equalButton = document.querySelector('.equality');
+
+buttons.forEach(button => button.addEventListener(('click'),(e) => {
+    if(lastTwoButtons.curr == ''){
+        lastTwoButtons.curr = e.target.textContent;
+    }else{
+        lastTwoButtons.prev = lastTwoButtons.curr;
+        lastTwoButtons.curr = e.target.textContent;
+    }
+}));
 
 numberButtons.forEach((button) => button.addEventListener(('click'),(e) => {
     let displayValue = displayContent.textContent;
@@ -115,7 +129,12 @@ function operate(){
 
     let computation;
     const prev = parseFloat(previousValue);
-    const current = parseFloat(displayContent.textContent);
+    let current = '';
+    if(lastTwoButtons.prev == '=' && lastTwoButtons.curr == '='){
+        current = parseFloat(currentValue);
+    }else{
+        current = parseFloat(displayContent.textContent);
+    }
     if(isNaN(prev) || isNaN(current)) return;
 
     switch(currentOperator){
@@ -139,15 +158,22 @@ function operate(){
         default:
             return;
     }
-    currentValue = '';
-    currentOperator = undefined;
-    previousValue = computation;
+
+    if(lastTwoButtons.curr == '='){
+        currentValue = current;
+        previousValue = computation;
+    }else{
+        currentValue = '';
+        currentOperator = undefined;
+        previousValue = computation;
+    }
 
     return computation;
 }
 
 equalButton.addEventListener('click',() => {
     isOperationInPlace = true;
+
     let result = operate();
     console.log(result);
 
@@ -190,6 +216,7 @@ function updateDisplay(value){
     }
 
 }
+
 
 function clearVariables(){
     previousValue       = '';
