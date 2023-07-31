@@ -79,7 +79,7 @@ clearButton.addEventListener(('click'),() => {
 
 backButton.addEventListener(('click'),() => {
     if(isOperationInPlace)return;
-    
+
     let displayValue = displayContent.textContent;
     if(displayValue == '0') return; 
     
@@ -130,7 +130,8 @@ function operate(){
             break;
         case '/':
             if(current == 0){
-                updateDisplay("Cannot Divide By Zero");
+                computation = "Cannot Divide By Zero";
+                clearVariables();
             }
             else
                 computation = divide(prev,current);
@@ -150,9 +151,14 @@ equalButton.addEventListener('click',() => {
     let result = operate();
     console.log(result);
 
-    if(result.toString().length > 16){
-        updateDisplay(result.toExponential(12));
+    if(result.toString().length > 16 && result !== "Cannot Divide By Zero"){
+        updateDisplay(result.toExponential(11));
     }
+
+    if(result == "Cannot Divide By Zero"){
+        displayContent.style.fontSize = "2.1rem";        
+    }
+
     updateDisplay(result); 
 });
 
@@ -194,6 +200,7 @@ function clearVariables(){
 }
 
 function clearDisplay(){
+    displayContent.style.fontSize = "4rem";
     displayContent.textContent = 0;
 }
 
